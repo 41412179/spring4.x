@@ -1,34 +1,37 @@
 package com.smart.service;
 
+
 import com.smart.domain.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.testng.AbstractTransactionalTestNGSpringContextTests;
 import org.testng.annotations.Test;
+
 import java.util.Date;
-import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertTrue;
 
-@ContextConfiguration(locations = "classpath:smart-context.xml")
+import static org.testng.AssertJUnit.assertEquals;
+import static org.testng.AssertJUnit.assertTrue;
+
+@ContextConfiguration("classpath:smart-context.xml")
 public class UserServiceTest extends AbstractTransactionalTestNGSpringContextTests {
-
     @Autowired
     private UserService userService;
 
     @Test
     public void testHasMatchUser() {
         boolean b1 = userService.hasMatchUser("admin", "123456");
-        boolean b2 = userService.hasMatchUser("admin", "11111");
+        boolean b2 = userService.hasMatchUser("admin", "1111");
         assertTrue(b1);
         assertTrue(!b2);
     }
 
     @Test
-    public void testFindUserByUserName() {
-        for (int i = 0; i < 10 ; i++) {
+    public void testFindUserByUserName() throws Exception {
+        for (int i = 0; i < 10; i++) {
             User user = userService.findUserByUserName("admin");
             assertEquals(user.getUserName(), "admin");
         }
+
     }
 
     @Test
@@ -38,4 +41,6 @@ public class UserServiceTest extends AbstractTransactionalTestNGSpringContextTes
         user.setLastVisit(new Date());
         userService.loginSuccess(user);
     }
+
+
 }

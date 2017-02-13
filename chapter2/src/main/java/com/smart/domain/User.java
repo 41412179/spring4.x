@@ -4,7 +4,6 @@ import java.io.Serializable;
 import java.util.Date;
 
 public class User implements Serializable {
-
     private int userId;
 
     private String userName;
@@ -13,9 +12,9 @@ public class User implements Serializable {
 
     private int credits;
 
-    private Date lastVisit;
-
     private String lastIp;
+
+    private Date lastVisit;
 
     public int getUserId() {
         return userId;
@@ -49,19 +48,19 @@ public class User implements Serializable {
         this.credits = credits;
     }
 
-    public Date getLastVisit() {
-        return lastVisit;
-    }
-
-    public void setLastVisit(Date lastVisit) {
-        this.lastVisit = lastVisit;
-    }
-
     public String getLastIp() {
         return lastIp;
     }
 
     public void setLastIp(String lastIp) {
         this.lastIp = lastIp;
+    }
+
+    public Date getLastVisit() {
+        return lastVisit;
+    }
+
+    public void setLastVisit(Date lastVisit) {
+        this.lastVisit = lastVisit;
     }
 }
