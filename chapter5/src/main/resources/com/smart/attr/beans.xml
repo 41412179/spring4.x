@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
+
+    <bean id="car" class="com.smart.attr.Car">
+        <property name="maxSpeed" value="200"/>
+        <property name="brand"><value><![CDATA[红旗&CA72]]></value></property>
+        <property name="price" value="20000.00"/>
+    </bean>
+
+    <!--引用Bean-->
+    <bean id="boss1" class="com.smart.attr.Boss">
+        <property name="car" ref="car"/>
+    </bean>
+
+    <!-- 内部Bean -->
+    <bean id="boss2" class="com.smart.attr.Boss">
+        <property name="car">
+            <bean class="com.smart.attr.Car">
+                <property name="maxSpeed" value="200"/>
+                <property name="price" value="20000.00"/>
+                <!-- 为属性设置null值 -->
+                <property name="brand"><null/></property>
+            </bean>
+        </property>
+    </bean>
+
+    <!-- 级联属性 -->
+    <bean id="boss3" class="com.smart.attr.Boss">
+        <!-- 以圆点的方式定义级别属性-->
+        <property name="car.brand" value="吉利"/>
+    </bean>
+
+    <!-- 集合类型属性 -->
+    <bean id="boss4" class="com.smart.attr.Boss">
+        <property name="favorites">
+            <!--List-->
+            <list>
+                <value>看报</value>
+                <value>赛车</value>
+                <value>高尔夫</value>
+                <ref bean="car"/>
+            </list>
+        </property>
+        <property name="jobs">
+            <!--Map-->
+            <map>
+                <entry key="AM" value="会见客户"/>
+                <entry key="PM" value="公司内部会议"/>
+                <entry key-ref="boss1" value-ref="boss2"/>
+            </map>
+        </property>
+        <property name="mails">
+            <!--Properties-->
+            <props>
+                <prop key="jobMail">john-office@smart.com</prop>
+                <prop key="lifeMail">john-life@smart.com</prop>
+            </props>
+        </property>
+    </bean>
+    <bean id="sportsCar" class="com.smart.attr.SportsCar">
+        <property name="brand">
+            <bean id="car.brand" class="org.springframework.beans.factory.config.PropertyPathFactoryBean"/>
+        </property>
+    </bean>
+
+    <bean id="parentBoss" class="com.smart.attr.Boss" abstract="true"> <!-- 父Bean -->
+        <property name="favorites">
+            <list>
+                <value>看报</value>
+                <value>赛车</value>
+                <value>高尔夫</value>
+            </list>
+        </property>
+    </bean>
+    <bean id="childBoss" class="com.smart.attr.Boss" parent="parentBoss"> <!-- 指定父Bean -->
+        <property name="favorites">
+            <list merge="true"> <!-- 和父Bean中的同名集合属性合并 -->
+                <value>爬山</value>
+                <value>游泳</value>
+            </list>
+        </property>
+    </bean>
+
+    <!-- 通过util命名空间配置集合类型的Bean -->
+    <util:set id="favoriteSet" set-class="java.util.HashSet">
+        <value>看报</value>
+        <value>赛车</value>
+        <value>高尔夫</value>
+    </util:set>
+</beans>

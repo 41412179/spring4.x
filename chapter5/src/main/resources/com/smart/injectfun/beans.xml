@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="car" class="com.smart.injectfun.Car"
+          p:brand="红旗&amp;CA72"
+          p:price="2000.00" scope="prototype"/>
+    <!-- lookup方法注入，在希望通过一个singleton Bean获取一个prototype Bean时使用-->
+    <!-- 仅通过配置为MagicBoss接口提供动态实现，返回prototype类型的Bean。其效果等同于MagicBossImpl类-->
+    <bean id="magicBoss" class="com.smart.injectfun.MagicBoss">
+        <lookup-method name="getCar" bean="car"/>
+    </bean>
+
+    <!-- 使用boss2的MethodReplacer接口方法替换该Bean的getCar()方法 -->
+    <bean id="boss1" class="com.smart.injectfun.Boss1">
+        <replaced-method name="getCar" replacer="boss2"/>
+    </bean>
+    <!-- 用于替换他人的Bean必须实现MethodReplacer接口 -->
+    <bean id="boss2" class="com.smart.injectfun.Boss2"/>
+</beans>

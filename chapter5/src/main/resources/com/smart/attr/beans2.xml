@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <!-- 1. 该Bean和父容器的car Bean具有相同的id -->
+    <bean id="car" class="com.smart.attr.Car">
+        <property name="brand" value="吉利CTS"/>
+        <property name="maxSpeed" value="100"/>
+        <property name="price" value="1000.00"/>
+    </bean>
+
+    <bean id="boss" class="com.smart.attr.Boss">
+        <!-- 引用父容器中的car，而非1.处的定义的Bean。如果采用
+        <property name="car" ref="car"/> 将引用本容器1.处的car -->
+        <property name="car"><ref parent="car"/> </property>
+    </bean>
+</beans>

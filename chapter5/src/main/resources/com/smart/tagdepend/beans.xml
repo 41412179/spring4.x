@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <!-- 父子Bean -->
+    <!-- 1. 定义为抽象Bean， abstract="true" 表明这个<bean>不实例化为一个对应的Bean -->
+    <bean id="abstractCar" class="com.smart.tagdepend.Car"
+          p:brand="红旗CA72" p:price="2000.00" abstract="true"/>
+    <!-- 继承于abstractCar -->
+    <bean id="car3" parent="abstractCar" p:color="红色"/>
+    <bean id="car4" parent="abstractCar" p:color="白色"/>
+
+    <!-- Bean的依赖，depends-on 属性显示指定该Bean前置依赖的Bean，前置依赖的Bean会在本Bean实例化之前创建好 -->
+    <bean id="cacheManager" class="com.smart.tagdepend.CacheManager" depends-on="sysInit"/>
+    <bean id="sysInit" class="com.smart.tagdepend.SysInit"/>
+
+    <bean id="car" class="com.smart.tagdepend.Car"/>
+    <bean id="boss" class="com.smart.tagdepend.Boss">
+        <property name="carId">
+            <!-- 通过 <idref> 标签引用另一个<bean>的名字-->
+            <idref bean="car"/>
+        </property>
+    </bean>
+</beans>

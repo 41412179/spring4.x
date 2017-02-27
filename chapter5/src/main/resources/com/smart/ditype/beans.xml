@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+    <!-- 属性注入 -->
+    <!-- Spring 只会检查Bean中是否有对应的Setter方法， 至于Bean中是否有对应的属性或成员变量则不作要求. -->
+    <bean id="car" class="com.smart.ditype.Car">
+        <property name="maxSpeed" value="200"/>
+        <property name="brand" value="红旗CA72"/>
+        <property name="price" value="20000.00"/>
+    </bean>
+
+    <!-- 构造函数注入 -->
+    <bean id="car1" class="com.smart.ditype.Car">
+        <!-- 构造函数参数具有不同的类型，按类型匹配入参 -->
+        <constructor-arg type="java.lang.String" value="红旗CA72"/>
+        <constructor-arg type="double" value="20000"/>
+    </bean>
+    <bean id="car2" class="com.smart.ditype.Car">
+        <!-- 构造函数参数具有相同的类型，按索引匹配入参 -->
+        <constructor-arg index="0" value="红旗CA72"/>
+        <constructor-arg index="1" value="中国一汽"/>
+        <constructor-arg index="2" value="20000" type="double"/>
+    </bean>
+    <bean id="car3" class="com.smart.ditype.Car">
+        <!-- 联合使用类型和索引匹配参数 -->
+        <constructor-arg index="0" value="红旗CA72"/>
+        <constructor-arg index="1" value="中国一汽"/>
+        <constructor-arg index="2" type="int" value="200"/>
+    </bean>
+    <bean id="office" class="com.smart.ditype.Office"/>
+    <bean id="boss" class="com.smart.ditype.Boss">
+        <!-- 构造函数入参的类型是可辨别的（非基础数据类型且入参类型各异），通过自身类型反射匹配入参 -->
+        <constructor-arg value="Jhon"/>
+        <constructor-arg ref="car"/>
+        <constructor-arg ref="office"/>
+    </bean>
+    <!-- 循环依赖问题的解决方法：将构造函数注入方式调整为属性注入方式 -->
+    <!--<bean id="car4" class="com.smart.ditype.Car">-->
+        <!--<constructor-arg index="0" value="红旗CA72"/>-->
+        <!--<constructor-arg index="1" ref="boss4"/>-->
+    <!--</bean>-->
+    <!--<bean id="boss4" class="com.smart.ditype.Boss">-->
+        <!--<constructor-arg index="0" value="John"/>-->
+        <!--<constructor-arg index="1" ref="car4"/>-->
+    <!--</bean>-->
+
+    <!-- 工厂Bean-->
+    <bean id="carFactory" class="com.smart.ditype.CarFactory"/>
+    <!-- 非静态工厂方法 -->
+    <bean id="car5" factory-bean="carFactory" factory-method="createHongqiCar"/>
+
+    <!-- 静态工厂方法，无需实例化工厂Bean -->
+    <bean id="car6" class="com.smart.ditype.CarFactory" factory-method="createHongQiCar"/>
+
+</beans>
