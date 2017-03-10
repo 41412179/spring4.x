@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="monitor" class="com.smart.introduce.ControllablePerformanceMonitor"/>
+    <bean id="forumServiceTarget" class="com.smart.introduce.ForumService"/>
+    <!-- 由于引介增强一定要通过创建子类来生成代理，所以需要强制使用cglib动态代理，否则会报错 -->
+    <bean id="forumService" class="org.springframework.aop.framework.ProxyFactoryBean"
+          p:interfaces="com.smart.introduce.Monitorable"
+          p:interceptorNames="monitor"
+          p:target-ref="forumServiceTarget"
+          p:proxyTargetClass="true"/>
+</beans>
