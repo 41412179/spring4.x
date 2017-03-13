@@ -8,7 +8,7 @@ public class PerformanceHandler implements InvocationHandler { // 实现Invocati
     private Object target;
 
     public PerformanceHandler(Object target) {
-        this.target = target;   // target位目标业务类
+        this.target = target;   // target为目标业务类
     }
 
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
