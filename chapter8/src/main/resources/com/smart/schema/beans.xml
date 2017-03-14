@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
+
+    <aop:config proxy-target-class="true">
+        <aop:advisor advice-ref="testAdvice" pointcut="execution(* com..*.Waiter.greetTo(..))"/>
+        <!-- 1.引用4处的adviceMethods -->
+        <aop:aspect ref="adviceMethods">
+            <!-- 2.声明切点表达式 -->
+            <aop:before pointcut="target(com.smart.NaiveWaiter) and args(name)"
+                        method="preGreeting" arg-names="name"/> <!-- 3. 增强方法使用adviceMethods Bean中的preGreeting方法-->
+            <aop:after-returning method="afterReturning"
+                                 pointcut="target(com.smart.SmartSeller)" returning="retVal"/>
+            <aop:around method="aroundMethod" arg-names="pjp"
+                        pointcut="execution(* serveTo(..)) and within(com.smart.Waiter)"/>
+            <aop:after-throwing method="afterThrowingMethod"
+                                pointcut="target(com.smart.SmartSeller) and execution(* checkBill(..))" throwing="iae"/>
+            <aop:after method="afterMethod"
+                       pointcut="execution(* com..*.Waiter.greetTo(..))"/>
+            <aop:declare-parents types-matching="com.smart.Waiter+"
+                                 implement-interface="com.smart.Seller" default-impl="com.smart.SmartSeller"/>
+            <aop:before method="bindParams" arg-names="num,name"
+                        pointcut="target(com.smart.NaiveWaiter) and args(name,num,..)"/>
+        </aop:aspect>
+    </aop:config>
+
+    <!-- 4.增强方法所在的Bean -->
+    <bean id="adviceMethods" class="com.smart.schema.AdviceMethods"/>
+    <bean id="naiveWaiter" class="com.smart.NaiveWaiter"/>
+    <bean id="naughtWaiter" class="com.smart.NaughtyWaiter"/>
+    <bean id="testAdvice" class="com.smart.schema.TestBeforeAdvice"/>
+</beans>
