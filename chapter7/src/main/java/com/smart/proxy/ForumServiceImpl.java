@@ -12,9 +12,10 @@ public class ForumServiceImpl implements ForumService {
 //        PerformanceMonitor.end();
     }
 
-        public void removeForum(int forumId) {
+    public void removeForum(int forumId) {
 //        PerformanceMonitor.begin("com.smart.proxy.ForumServiceImpl.removeForum");
         System.out.println("模拟删除Forum记录:" + forumId);
+        test();
         try {
             Thread.sleep(20);
         } catch (Exception e) {
@@ -22,4 +23,6 @@ public class ForumServiceImpl implements ForumService {
         }
 //        PerformanceMonitor.end();
     }
+
+    private void test() {System.out.println("----------------测试------------------");}
 }

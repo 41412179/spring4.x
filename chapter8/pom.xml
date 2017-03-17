@@ -6,6 +6,7 @@
 
     <groupId>com.smart</groupId>
     <artifactId>chapter8</artifactId>
+    <packaging>pom</packaging>
     <version>1.0</version>
     <name>Spring4.x第八章实例</name>
 
@@ -52,6 +53,7 @@
             <artifactId>aspectjweaver</artifactId>
             <version>${aspectj.version}</version>
         </dependency>
+        <!-- aop联盟api -->
         <dependency>
             <groupId>aopalliance</groupId>
             <artifactId>aopalliance</artifactId>
